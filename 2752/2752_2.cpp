@@ -8,7 +8,7 @@ void swap(int& a, int& b)
     b = t;
 }
 
-int main(){
+int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
@@ -18,7 +18,7 @@ int main(){
 
     if(a>b)swap(a, b);
 
-    if(b>c){
+    if(b>c) {
         swap(b, c);
         if(a>b) swap(a, b);
     }

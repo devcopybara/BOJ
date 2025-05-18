@@ -6,7 +6,7 @@ void swap(int* a,int* b) {
     *b = t;
 }
 
-int main() {
+int main(void) {
     int a, b, c;
     scanf("%d %d %d", &a, &b, &c);
     

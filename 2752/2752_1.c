@@ -6,7 +6,7 @@ void swap(int* a, int* b) {
     *b = t;
 }
 
-int main() {
+int main(void) {
     int a[3];
 
     for(int i = 0; i < 3; i++) {

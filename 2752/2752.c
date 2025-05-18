@@ -3,7 +3,7 @@
 #define MAX(a, b, c) (a >= b && a >= c ? a : b >= a && b >= c ? b : c)
 #define MIN(a, b, c) (a <= b && a <= c ? a : b <= a && b <= c ? b : c)
 
-int main() {
+int main(void) {
     int a, b, c;
     int d, e, f;
 

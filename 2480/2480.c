@@ -2,7 +2,7 @@
 
 #define MAX(a, b, c) (a >= b && a >= c ? a : b >= a && b >= c ? b : c)
 
-int main() {
+int main(void) {
     int a, b, c;
     scanf("%d %d %d", &a, &b, &c);
 

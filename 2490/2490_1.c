@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+int main(void) {
     int a, cnt;
     char res[6] = "DCBAE";
 

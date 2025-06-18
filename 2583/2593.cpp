@@ -1,5 +1,36 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
+
+void sort(int* arr, int size) {
+    for(int i = size - 1; i > 0; i--) {
+        for(int j = 0; j < i; j++) {
+            if(arr[j] > arr[j + 1]) {
+                int tmp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = tmp;
+            }
+        }
+    }
+}
+
+const int MX = 10005;
+template<typename dat_t>
+struct queue{
+    dat_t dat[MX];
+    int head = 0, tail = 0;
+    void push(dat_t x) {
+        dat[tail++] = x;
+    }
+    void pop() {
+        head++;
+    }
+    dat_t front() {
+        return dat[head];
+    }
+    bool empty() {
+        return head == tail;
+    }
+};
 
 #define X first
 #define Y second
@@ -7,7 +38,7 @@ bool vis[102][102];
 int dx[4] = {0,1,0,-1};
 int dy[4] = {1,0,-1,0};
 queue<pair<int,int>> Q;
-int areas[10004];
+
 int main(void) {
     ios::sync_with_stdio(0);
     cin.tie(0);
@@ -24,17 +55,17 @@ int main(void) {
         }
     }
 
-    int cnt = 0;
+    int ans[5005], size = 0;
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
             if(vis[i][j]) continue;
 
-            int area = 0;
+            int cnt = 0;
             vis[i][j] = 1;
             Q.push({i,j});
             while(!Q.empty()) {
                 pair<int,int> cur = Q.front(); Q.pop();
-                area++;
+                cnt++;
                 for(int dir = 0; dir < 4; dir++) {
                     int nx = cur.X + dx[dir];
                     int ny = cur.Y + dy[dir];
@@ -44,13 +75,13 @@ int main(void) {
                     Q.push({nx,ny});
                 }
             }
-            areas[cnt++] = area;
+            ans[size++] = cnt;
         }
     }
 
-    sort(areas, areas + cnt);
-    cout << cnt << '\n';
-    for(int i = 0; i < cnt; i++) {
-        cout << areas[i] << ' ';
+    sort(ans, size);
+    cout << size << '\n';
+    for(int i = 0; i < size; i++) {
+        cout << ans[i] << ' ';
     }
 }

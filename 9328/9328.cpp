@@ -3,75 +3,73 @@ using namespace std;
 
 #define X first
 #define Y second
-int dx[4] = {0,1,0,-1};
-int dy[4] = {1,0,-1,0};
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
 char board[102][102];
-bool vis[102][102];
-vector<pair<int,int>> door[26];
+int vis[102][102];
+queue<pair<int, int>> Q;
 int t, n, m;
-queue<pair<int,int>> Q;
-int main(void) {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
 
-    cin >> t;
-    while(t--) {
-        fill(board, board + 10004, 0);
-        fill(vis, vis + 10004, 0);
-        fill(door, door + 26, 0);
-        // set board
-        cin >> n >> m;
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                char tmp;
-                cin >> tmp;
-                board[i][j] = tmp;
-                if(tmp >= 'A' && tmp <= 'Z') {
-                    door[tmp-'A'].push_back({i,j});
-                }
+int main(void){
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+
+	cin >> t;
+	while(t--){
+        queue<pair<int, int>> door[26];
+		int key[26] = {};
+		int ans = 0;
+		cin >> n >> m;
+
+		for(int i = 0; i < n + 2; i++){
+			fill(vis[i], vis[i] + m + 2, 0);
+			fill(board[i], board[i] + m + 2, 0);
+		}
+		for(int i = 1; i <= n; i++) {
+			for(int j = 1; j <= m; j++) {
+				cin >> board[i][j];
             }
         }
-        // set key
+
         string keys;
-        cin >> keys;
-        if(keys != "0") {
-
+		cin >> keys;
+		for(char ch : keys) {
+			key[ch - 'a'] = 1;
         }
-        // set start points
-        for(int i = 1; i < n-1; i++) {
-            if(board[0][i] == '.') {
-                vis[0][i] = 1;
-                Q.push({0,i});
-            }
-            if(board[m-1][i] == '.') {
-                board[m-1][i] = 1;
-                Q.push({m-1,i});
-            }
-        }
-        for(int i = 1; i < m-1; i++) {
-            if(board[i][0] == '.') {
-                vis[i][0] = 1;
-                Q.push({i,0});
-            }
-            if(board[i][n-1] == '.') {
-                vis[i][n-1] = 1;
-                Q.push({i,n-1});
-            }
-        }
-        // get answer
-        int ans = 0;
-        while(!Q.empty()) {
-            pair<int,int> cur = Q.front(); Q.pop();
-            if(board[cur.X][cur.Y] == '$') ans++;
+		
+		Q.push({0, 0});
+		vis[0][0] = 1;
+		while(!Q.empty()){
+			pair<int,int> cur = Q.front(); Q.pop();
+			for(int dir = 0; dir < 4; dir++){
+				int nx = cur.X + dx[dir];
+				int ny = cur.Y + dy[dir];
+				if(nx < 0 || nx > n + 1 || ny < 0 || ny > m + 1) continue;
+				if(vis[nx][ny] || board[nx][ny] == '*') continue;
 
-            for(int dir = 0; dir < 4; dir++) {
-                int nx = cur.X + dx[dir], ny = cur.Y + dy[dir];
-                if(nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-                if(board[nx][ny] == '*' || vis[nx][ny]) continue;
-
-                if(board[nx][ny] >= 'A' && board[nx][ny] <= 'Z' && !key[board[nx][ny]-'A']) continue;
-
-            }
-        }
-    }
+                vis[nx][ny] = 1;
+				Q.push({nx, ny});
+                
+                if(board[nx][ny] >= 'a' && board[nx][ny] <= 'z'){
+                    int k = board[nx][ny] - 'a';
+					key[k] = 1;
+					while(!door[k].empty()){
+                        pair<int,int> ndoor = door[k].front(); door[k].pop();
+						Q.push({ndoor.X, ndoor.Y});
+					}
+				}
+				else if(board[nx][ny] >= 'A' && board[nx][ny] <= 'Z'){
+                    int k = board[nx][ny] - 'A';
+					if (!key[k]){ 
+                        door[k].push({nx, ny});
+						continue;
+					}
+				}
+				else if(board[nx][ny] == '$') {
+                    ans++;
+                }
+			}
+		}
+		cout << ans << "\n";
+	}
 }

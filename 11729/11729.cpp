@@ -1,41 +1,32 @@
-// https://www.acmicpc.net/problem/11729
+#include <bits/stdc++.h>
+using namespace std;
 
-#include <stdio.h>
-
-void PrintEachHanoiMoves(int num, int prev, int curr, int next)
+void printHanoiMove(int n, int src, int dst, int nxt)
 {
-    if(num == 1)
-    {
-        printf("%d %d\n", prev, curr);
+    if(n == 1) {
+        cout << src << ' ' << dst << '\n';
         return;
     }
-
-    PrintEachHanoiMoves(num - 1, prev, next, curr);
-
-    PrintEachHanoiMoves(1, prev, curr, next);
-
-    PrintEachHanoiMoves(num - 1, next, curr, prev);
+    printHanoiMove(n - 1, src, nxt, dst); // move all plate from src to nxt accept the largest plate
+    printHanoiMove(1, src, dst, nxt);  // move the largest plate from src to dst
+    printHanoiMove(n - 1, nxt, dst, src); // move all plate from nxt to dst accept the largest plate
 }
 
-int Hanoi(int n)
+int hanoi(int n)
 {
-    if(n == 1)
-    {
-        return 1;
-    }
-
-    return Hanoi(n - 1) * 2 + 1;
+    // if(n == 1) return 1;
+    // return hanoi(n - 1) * 2 + 1;
+    return (1 << n) - 1;
 }
 
 int main(void)
 {
-    // freopen("input.txt", "r", stdin);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    int N;
-    scanf("%d", &N);
+    int n;
+    cin >> n;
 
-    printf("%d\n", Hanoi(N));
-    PrintEachHanoiMoves(N, 1, 3, 2);
-
-    return 0;
+    cout << hanoi(n) << '\n';
+    printHanoiMove(n, 1, 3, 2);
 }

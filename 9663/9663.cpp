@@ -8,10 +8,8 @@ int ans;
 
 bool check(int x, int y) {
     for(int row = 0; row < x; row++) {
-        if(y - col[row] == x - row || 
-            col[row] - y == x - row) {
+        if(y - col[row] == x - row || col[row] - y == x - row)
             return true;
-        }
     }
     return false;
 }

@@ -3,10 +3,9 @@
 using namespace std;
 
 const int MX = 101;
-const int INF = MX * 2;
 
 int r,c,k;
-int arr[INF][INF];
+int arr[MX][MX];
 int cnt[MX];
 int sec;
 

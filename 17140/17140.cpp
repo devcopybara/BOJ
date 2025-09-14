@@ -71,13 +71,12 @@ int main() {
 
         if(n >= m) {
             // r 연산
-            int max_size = 1;
+            int max_size = 0;
             for(int i = 0; i < n; i++) {
                 fill(cnt, cnt + MX, 0);
 
                 for(int j = 0; j < m; j++) {
-                    if(arr[i][j] != 0)
-                        cnt[arr[i][j]]++;
+                    cnt[arr[i][j]]++;
                 }
 
                 int j = 0;
@@ -90,19 +89,18 @@ int main() {
                 max_size = max(max_size, j);
                 sort2(i,j,0);
 
-                while(j < INF) arr[i][j++] = 0;
+                while(j < MX) arr[i][j++] = 0;
             }
             m = min(max_size, 100);
         }
         else {
             // c 연산
-            int max_size = 1;
+            int max_size = 0;
             for(int j = 0; j < m; j++) {
                 fill(cnt, cnt + MX, 0);
                 
                 for(int i = 0; i < n; i++) {
-                    if(arr[i][j] != 0)
-                        cnt[arr[i][j]]++;
+                    cnt[arr[i][j]]++;
                 }
 
                 int i = 0;
@@ -115,7 +113,7 @@ int main() {
                 max_size = max(max_size, i);
                 sort2(j,i,1);
 
-                while(i < INF) arr[i++][j] = 0;
+                while(i < MX) arr[i++][j] = 0;
             }
             n = min(max_size, 100);
         }

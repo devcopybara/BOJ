@@ -37,7 +37,11 @@ int main() {
         result.push_back(cur);
         for(int nxt : adj[cur]) {
             deg[nxt]--;
-            total_parts_cnt[nxt][cur]
+            
+            for(int i : basic_parts) {
+                total_parts_cnt[nxt][cur];
+            }
+            
             if(deg[nxt] == 0) {
                 q.push(nxt);
             }

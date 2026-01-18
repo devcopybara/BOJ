@@ -1,8 +1,8 @@
 #include <iostream>
 using namespace std;
 
-const int M = 1'000'003;
-const int MX = 100'005;
+const int M = 100'001;
+const int MX = 100'001;
 typedef struct _unordered_map{
     int head[M];
     int pre[MX];
@@ -37,12 +37,6 @@ typedef struct _unordered_map{
     }
 
     void insert(string k, int v) {
-        int idx = find(k);
-        if(idx != -1) {
-            val[idx] = v;
-            return;
-        }
-
         int h = my_hash(k);
 
         key[unused] = k;
@@ -52,17 +46,6 @@ typedef struct _unordered_map{
 
         head[h] = unused;
         unused++;
-    }
-
-    void erase(string k) {
-        int idx = find(k);
-        if(idx == -1) return;
-
-        if(pre[idx] != -1) nxt[pre[idx]] = nxt[idx];
-        if(nxt[idx] != -1) pre[nxt[idx]] = pre[idx];
-
-        int h = my_hash(k);
-        if(head[h] == idx) head[h] = nxt[idx];
     }
 }unordered_map;
 

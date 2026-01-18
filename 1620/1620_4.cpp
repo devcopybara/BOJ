@@ -2,13 +2,13 @@
 using namespace std;
 
 const int M = 1'000'003;
-const int MX = 100'005;
+const int EMPTY = -1;
+const int OCCUPY = 0;
+const int DUMMY = 1;
 typedef struct _unordered_map{
-    int head[M];
-    int pre[MX];
-    int nxt[MX];
-    string key[MX];
-    int val[MX];
+    int status[M]; // EMPTY / OCCUPY / DUMMY
+    string key[M];
+    int val[M];
     int unused = 0;
 
     const int a = 1000;
@@ -20,18 +20,14 @@ typedef struct _unordered_map{
     }
 
     void init() {
-        fill(head, head+M, -1);
-        fill(pre, pre+MX, -1);
-        fill(nxt, nxt+MX, -1);
+        fill(status, status+M, -1);
     }
 
     int find(string k) {
-        int h = my_hash(k);
-        
-        int idx = head[h];
-        while(idx != -1) {
-            if(key[idx] == k) return idx;
-            idx = nxt[idx];
+        int idx = my_hash(k);
+        while(status[idx] != EMPTY) {
+            if(status[idx] == OCCUPY && key[idx] == k) return idx;
+            idx = (idx+1) % M;
         }
         return -1;
     }
@@ -43,26 +39,21 @@ typedef struct _unordered_map{
             return;
         }
 
-        int h = my_hash(k);
+        idx = my_hash(k);
+        while(status[idx] == OCCUPY) {
+            idx = (idx+1) % M;
+        }
 
-        key[unused] = k;
-        val[unused] = v;
-        nxt[unused] = head[h];
-        if(head[h] != -1) pre[head[h]] = unused;
-
-        head[h] = unused;
-        unused++;
+        status[idx] = OCCUPY;
+        key[idx] = k;
+        val[idx] = v;
     }
 
     void erase(string k) {
         int idx = find(k);
-        if(idx == -1) return;
-
-        if(pre[idx] != -1) nxt[pre[idx]] = nxt[idx];
-        if(nxt[idx] != -1) pre[nxt[idx]] = pre[idx];
-
-        int h = my_hash(k);
-        if(head[h] == idx) head[h] = nxt[idx];
+        if(idx != -1) return;
+        
+        status[idx] = DUMMY;
     }
 }unordered_map;
 

@@ -30,7 +30,7 @@ int main() {
         tie(v, m) = jewel[i];
         auto it = bag.lower_bound(m);
         if(it == bag.end()) continue;
-            ans += v;
+        ans += v;
         bag.erase(it);
     }
     cout << ans;

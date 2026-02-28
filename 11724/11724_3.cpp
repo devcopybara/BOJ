@@ -1,11 +1,16 @@
+// https://www.acmicpc.net/problem/11724
 #include <bits/stdc++.h>
 using namespace std;
-vector<int> adj[1'005];
-vector<bool> vis(1'005, false);
-int n, m;
+
+const int MX = 1'005;
+vector<int> adj[MX];
+vector<bool> vis(MX,false);
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
+
+    int n, m;
     cin >> n >> m;
     for(int i = 0; i < m; i++) {
         int u, v;
@@ -14,21 +19,23 @@ int main() {
         adj[v].push_back(u);
     }
 
-    int ans = 0;
-    queue<int> q;
+    int cnt = 0;
     for(int i = 1; i <= n; i++) {
         if(vis[i]) continue;
-        ans++;
-        q.push(i);
-        vis[i] = true;
-        while(!q.empty()) {
-            int cur = q.front(); q.pop();
+        cnt++;
+
+        stack<int> s;
+        s.push(i);
+
+        while(!s.empty()) {
+            auto cur = s.top(); s.pop();
+            if(vis[cur]) continue;
+            vis[cur] = 1;
             for(auto nxt : adj[cur]) {
                 if(vis[nxt]) continue;
-                q.push(nxt);
-                vis[nxt] = true;
+                s.push(nxt);
             }
         }
     }
-    cout << ans;
+    cout << cnt;
 }

@@ -9,7 +9,7 @@ int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cin >> n;
-    while(1) {
+    for(int i = 0; i < n; i++) {
         int u, v;
         cin >> u >> v;
         if(u == -1 || v == -1) break;

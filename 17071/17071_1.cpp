@@ -2,7 +2,7 @@
 
 // visited 배열의 차원은 왜 이만큼인가?
 // 이 문제에서 ‘상태(state)’는 좌표 (n')와 좌표 (k') 이며, 
-// 좌표 (n') 에 필요한 정보는 ‘홀수/짝수 시간에 도달한 최단 거리’뿐이므로, dist[x][2] 형태의 2차원 배열이면 충분하다. 
+// 좌표 (n') 에 필요한 정보는 ‘x좌표에 홀수/짝수 시간에 도달한 최단 시간’뿐이므로, dist[x][2] 형태의 2차원 배열이면 충분하다. 
 // 좌표 (k') 에 필요한 정보는 ‘좌표 (k)’와 ‘경과 시간’으로 구할 수 있다.
 
 // 상태를 노드로 바꾼 순간이 언제인가?
@@ -15,7 +15,7 @@
 using namespace std;
 
 const int MX = 500'002;
-int dist[MX];
+int dist[2][MX];
 
 int main() {
     ios::sync_with_stdio(0);
@@ -27,36 +27,35 @@ int main() {
         cout << 0;
         return 0;
     }
-    fill(dist,dist+MX,-1);
+
+    fill(dist[0],dist[0]+MX,-1);
+    fill(dist[1],dist[1]+MX,-1);
     
     int time = 0;
     int mx = 500'000;
 
-    queue<int> nq;
-    dist[n] = 0;
-    nq.push(n);
+    queue<int> q;
+    dist[0][n] = 0;
+    q.push(n);
 
-    while(!nq.empty()) {
+    while(!q.empty()) {
         time++;
         // soobin move
-        queue<int> q;
-        while (!nq.empty()) {
-            q.push(nq.front()); nq.pop();
-        }
-        while(!q.empty()) {
+        int sz = q.size();
+        for(int i = 0; i < sz; i++) {
             auto curX = q.front(); q.pop();
 
             for(int nx : {curX*2, curX+1, curX-1}) {
                 if(nx < 0 || nx > mx) continue;
-                if(dist[nx] != -1) continue;
-                dist[nx] = time;
-                nq.push(nx);
+                if(dist[time&1][nx] != -1) continue;
+                dist[time&1][nx] = time;
+                q.push(nx);
             }
         }
         // dongsang move
         k += time;
         if(k > mx) break;
-        if((dist[k] != -1) && ((dist[k] & 1) == (time & 1))) {
+        if(dist[time&1][k] != -1) {
             cout << time;
             return 0;
         }

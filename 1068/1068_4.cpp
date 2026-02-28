@@ -3,17 +3,19 @@
 using namespace std;
 
 const int MX = 52;
-int p[MX];
 vector<int> ch[MX];
 
-int dfs(int cur) {
-    if(ch[cur].size() == 0) return 1;
+int root = -1;
+int x;
 
-    int cnt = 0;
+int dfs(int cur) {
+    if(cur == x) return 0;
+
+    int lCnt = 0;
     for(int nxt : ch[cur]) {
-        cnt += dfs(nxt);
+        lCnt += dfs(nxt);
     }
-    return cnt;
+    return (lCnt ? lCnt : 1);
 }
 
 int main() {
@@ -23,22 +25,14 @@ int main() {
     int n;
     cin >> n;
 
-    int root = -1;
     for(int i = 0; i < n; i++) {
         int tmp;
         cin >> tmp;
-        p[i] = tmp;
 
         if(tmp == -1) root = i;
         else ch[tmp].push_back(i);
     }
     
-    int x;
     cin >> x;
-    if(x != root && ch[p[x]].size() == 1) {
-        cout << dfs(root) - dfs(x) + 1;
-    }
-    else {
-        cout << dfs(root) - dfs(x);
-    }
+    cout << dfs(root);
 }

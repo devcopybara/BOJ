@@ -1,0 +1,36 @@
+// https://www.acmicpc.net/problem/11725
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MX = 100'005;
+vector<int> adj[MX];
+int p[MX];
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n;
+    cin >> n;
+    for(int i = 0; i < n-1; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    queue<int> q;
+    q.push(1);
+    while(!q.empty()) {
+        auto cur = q.front(); q.pop();
+        for(auto nxt : adj[cur]) {
+            if(nxt == p[cur]) continue;
+            p[nxt] = cur;
+            q.push(nxt);
+        }
+    }
+
+    for(int u = 2; u <= n; u++) {
+        cout << p[u] << '\n';
+    }
+}

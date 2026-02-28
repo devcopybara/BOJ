@@ -6,7 +6,15 @@ const int MX = 52;
 int p[MX];
 vector<int> ch[MX];
 
+int root = -1;
+int x;
+
 int dfs(int cur) {
+    if(cur == x) {
+        if(x != root && ch[p[x]].size() == 1) return 1;
+        return 0;
+    }
+
     if(ch[cur].size() == 0) return 1;
 
     int cnt = 0;
@@ -23,7 +31,6 @@ int main() {
     int n;
     cin >> n;
 
-    int root = -1;
     for(int i = 0; i < n; i++) {
         int tmp;
         cin >> tmp;
@@ -33,12 +40,6 @@ int main() {
         else ch[tmp].push_back(i);
     }
     
-    int x;
     cin >> x;
-    if(x != root && ch[p[x]].size() == 1) {
-        cout << dfs(root) - dfs(x) + 1;
-    }
-    else {
-        cout << dfs(root) - dfs(x);
-    }
+    cout << dfs(root);
 }

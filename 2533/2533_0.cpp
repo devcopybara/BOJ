@@ -1,5 +1,4 @@
 // https://www.acmicpc.net/problem/2533
-
 #include <bits/stdc++.h>
 using namespace std;
 int n;

@@ -8,14 +8,16 @@ const uint64 MX = 100'005ULL;
 const uint64 INF= MX * 100'005ULL;
 vector<pii> adj[MX];
 uint64 dist[MX];
-uint64 min_dist[MX];
 priority_queue<pii,vector<pii>,greater<pii>> pq;
+uint64 st[MX];
 
-void dijkstra(uint64 st) {
+void dijkstra(uint64 st[MX]) {
     fill(dist+1,dist+1+n,INF);
 
-    dist[st] = 0;
-    pq.push({0,st});
+    for(uint64 i = 1; i <= k; i++) {
+        dist[st[i]] = 0;
+        pq.push({0,st[i]});
+    }
     while(!pq.empty()) {
         auto [d,u] = pq.top(); pq.pop();
         if(d != dist[u]) continue;
@@ -39,20 +41,15 @@ int main() {
         adj[v].push_back({c,u});
     }
 
-    fill(min_dist+1,min_dist+1+n,INF);
-    while(k--) {
-        int st;
-        cin >> st;
-        dijkstra(st);
+    for(uint64 i = 1; i <= k; i++)
+        cin >> st[i];
+    dijkstra(st);
 
-        for(uint64 i = 1; i <= n; i++)
-            min_dist[i] = min(min_dist[i], dist[i]);
-    }
     uint64 max_i = 0, max_d = 0;
     for(uint64 i = 1; i <= n; i++) {
-        if(min_dist[i] != INF) {
-            if(max_d < min_dist[i]) {
-                max_d = min_dist[i];
+        if(dist[i] != INF) {
+            if(max_d < dist[i]) {
+                max_d = dist[i];
                 max_i = i;
             }
         }

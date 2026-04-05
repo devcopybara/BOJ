@@ -1,52 +1,34 @@
-// https://www.acmicpc.net/problem/1253
+// https://www.acmicpc.net/problem/3151
 #include <bits/stdc++.h>
 using namespace std;
-using int64 = long long;
-int n;
-int64 arr[100'005];
-int upper_idx(int target) {
-    int st = 0;
-    int en = n;
-    while(st < en) {
-        int mid = (st+en)/2;
-        if(target < arr[mid]) en = mid;
-        else st = mid+1;
-    }
-    return st;
-}
-int lower_idx(int target) {
-    int st = 0;
-    int en = n;
-    while(st < en) {
-        int mid = (st+en)/2;
-        if(target <= arr[mid]) en = mid;
-        else st = mid+1;
-    }
-    return st;
-}
-vector<bool> state(100'005, false);
+
+const int MX = 2'005;
+int arr[MX];
+
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    cin >> n;
-    for(int i = 0; i < n; i++)
-        cin >> arr[i];
-    sort(arr, arr+n);
-    int64 ans = 0;
-    for(int i = 0; i < n; i++) {
+
+    int n; cin >> n;
+    for(int i = 0; i < n; i++) cin >> arr[i];
+    
+    sort(arr,arr+n);
+
+    int ans = 0;
+    for(int i = n-1; i >= 0; i--) {
         for(int j = 0; j < n; j++) {
-            bool is_good = false;
-            if(i == j) continue;
-            int ui = upper_idx(arr[i]-arr[j]);
-            int li = lower_idx(arr[i]-arr[j]);
-            if(li == n) continue;
-            for(int k = li; k < ui; k++) {
-                if(k==i || k==j) continue;
-                is_good = true;
+            if(j == i) continue;
+
+            int st = lower_bound(arr,arr+n,arr[i]-arr[j])-arr;
+            int en = upper_bound(arr,arr+n,arr[i]-arr[j])-arr;
+
+            int cnt = en-st;
+            if(arr[i] == arr[st]) cnt--;
+            if(arr[j] == arr[st]) cnt--;
+            if(cnt > 0) {
                 ans++;
                 break;
             }
-            if(is_good) break;
         }
     }
     cout << ans;

@@ -1,49 +1,64 @@
+// https://www.acmicpc.net/problem/18870
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, m;
-int a[1000005];
-int tmp[1000005];
-int uni[1000005];
+const int MX = 1'000'005;
+int a[MX];
+int b[MX];
+int n;
+int uni[MX];
+int m;
 
-int lower_idx(int tar, int arr[], int len) {
+int binary_search(int tar) {
     int st = 0;
-    int en = len;
-    while(st < en) {
+    int en = m-1;
+
+    while(st <= en) {
         int mid = (st+en)/2;
-        if(tar <= arr[mid]) en = mid;
-        else st = mid + 1;
+        if(uni[mid] < tar) st = mid+1;
+        else if(uni[mid] > tar) en = mid-1;
+        else return mid;
     }
-    return st;
+    return -1;
 }
 
-int upper_idx(int tar, int arr[], int len) {
+int lower_bound(int tar) {
     int st = 0;
-    int en = len;
+    int en = m;
+
     while(st < en) {
         int mid = (st+en)/2;
-        if(tar < arr[mid]) en = mid;
-        else st = mid + 1;
+        if(uni[mid] < tar) st = mid+1;
+        else if(uni[mid] > tar) en = mid;
+        else en = mid;
     }
-    return st;
+    return en;
+}
+
+int upper_bound(int tar) {
+    int st = 0;
+    int en = n;
+
+    while(st < en) {
+        int mid = (st+en)/2;
+        if(a[mid] < tar) st = mid+1;
+        else if(a[mid] > tar) en = mid;
+        else st = mid+1;
+    }
+    return en;
 }
 
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
+
     cin >> n;
-    for(int i = 0; i < n; i++) {
-        int val;
-        cin >> val;
-        a[i] = tmp[i] = val;
-    }
-    sort(tmp,tmp+n);
-    uni[m++] = tmp[0];
-    for(int i = 1; i < n; i++) {
-        if(tmp[i-1] != tmp[i])
-            uni[m++] = tmp[i];
-    }
-    for(int i = 0; i < n; i++) {
-        cout << lower_idx(a[i], uni, m) << ' ';
-    }
+    for(int i = 0; i < n; i++) cin >> a[i];
+    memcpy(b,a,n*sizeof(int));
+
+    sort(a,a+n);
+
+    for(int i = 0; i < n; i = upper_bound(a[i])) uni[m++] = a[i];
+
+    for(int i = 0; i < n; i++) cout << lower_bound(b[i]) << ' '; // binary_search(b[i]) << ' ';
 }

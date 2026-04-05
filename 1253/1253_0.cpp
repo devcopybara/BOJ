@@ -34,9 +34,9 @@ int main() {
     sort(arr, arr+n);
     for(int i = 0; i < n-1; i++) {
         for(int j = i+1; j < n; j++) {
-            int ui = upper_idx(arr[i]+arr[j]);
-            int li = lower_idx(arr[i]+arr[j]);
-            for(int k = li; k < ui; k++) {
+            int st = lower_idx(arr[i]+arr[j]);
+            int en = upper_idx(arr[i]+arr[j]);
+            for(int k = st; k < en; k++) {
                 if(k == i || k == j) continue;
                 state[k] = 1;
             }

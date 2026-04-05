@@ -16,10 +16,9 @@ int main() {
     sort(a,a+n);
 
     int ans = INF;
-    for(int en=1, st=0; st<n; st++) {
-        while(en<n && a[en]-a[st] < m) en++;
-        if(en == n) break;
-        ans = min(ans,a[en]-a[st]);
+    for(int i = 0; i < n; i++) {
+        int k = lower_bound(a+i+1,a+n,a[i]+m) - a;
+        if(k != n && ans > a[k]-a[i]) ans = a[k]-a[i];
     }
     cout << ans;
 }

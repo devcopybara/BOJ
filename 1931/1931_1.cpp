@@ -19,7 +19,8 @@ using pii=pair<int,int>;
 #define X first
 #define Y second
 
-vector<pii> a;
+const int MX = 100'005;
+pii a[MX];
 
 int main() {
     ios::sync_with_stdio(0);
@@ -28,15 +29,15 @@ int main() {
     int n; cin >> n;
     for(int i = 0; i < n; i++) {
         int s, e; cin >> s >> e;
-        a.push_back({e,s});        
+        a[i] = {e,s};
     }
-    sort(a.begin(), a.end());
+    sort(a, a+n);
 
     int ans = 0;
-    pii pre = {0,0};
-    for(pii cur : a) {
-        if(pre.X <= cur.Y) {
-            pre = cur;
+    int t = 0;
+    for(int i = 0; i < n; i++) {
+        if(t <= a[i].Y) {
+            t = a[i].X;
             ans++;
         }
     }
